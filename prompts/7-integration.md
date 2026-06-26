@@ -64,7 +64,42 @@
 - 更新仓库根的 `STATE.md`
 - **不要归档 `.specs/LESSONS.md`**——它是项目级常驻文件，跨 change 累积
 
-#### 5.1 项目级架构文档同步（不在本步做 · 走 A-evolve）
+#### 5.1 DirectoryV3.xml 维护（必须）
+
+归档完成后，检查仓库根目录是否存在 `DirectoryV3.xml`：
+
+**路径 A · 文件不存在**：
+
+创建 `DirectoryV3.xml`，写入基本骨架并追加本次 change 信息：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?> 
+ <trees>
+     <tree path="/.specs/archive" title="归档"/>
+     <tree path="/.specs/archive/<YYYY-MM-DD>-<change-id>" title="<一句话标题>">
+         <desc><功能摘要></desc>
+         <date><YYYY-MM-DD></date>
+     </tree>
+ </trees>
+```
+
+**路径 B · 文件已存在**：
+
+直接在该文件 `<trees>` 节点内追加一条新的 `<tree>` 条目（不新建文件）：
+
+```xml
+     <tree path="/.specs/archive/<YYYY-MM-DD>-<change-id>" title="<一句话标题>">
+         <desc><功能摘要></desc>
+         <date><YYYY-MM-DD></date>
+     </tree>
+```
+
+- `path`：对应归档目录路径
+- `title`：CHANGE.md 的标题 + change-id
+- `desc`：一句话功能摘要（从 CHANGE.md 的 What 段提取）
+- `date`：归档日期
+
+#### 5.2 项目级架构文档同步（不在本步做 · 走 A-evolve）
 
 本 change 的 `DESIGN.md § 9 架构沉淀建议` **不在归档时立即合并到 `CONTEXT.md`**。原因：单个 change 视角窄，容易把临时决策错升项目级。
 
@@ -84,7 +119,7 @@
   N = `grep -c '^### 9\\.' DESIGN.md`，如果整段是"无架构层面沉淀建议"则 N=0，不必提示
 - **禁止**在本步直接修改 `.specs/CONTEXT.md`——它的更新统一走 `A-evolve` 或 `I-intel-scan`
 
-#### 5.2 Git 提交确认（必须）
+#### 5.3 Git 提交确认（必须）
 
 归档完成后 `.specs/` 目录已发生变更（STATE.md / CHANGELOG.md / archive/ / 原 change 目录），**必须询问开发者是否提交 git**。
 
